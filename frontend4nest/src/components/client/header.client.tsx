@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CodeOutlined, ContactsOutlined, DashOutlined, LogoutOutlined, MenuFoldOutlined, RiseOutlined, TwitterOutlined } from '@ant-design/icons';
-import { Avatar, Drawer, Dropdown, MenuProps, Space, message } from 'antd';
+import { Avatar, Drawer, Dropdown, MenuProps, Space, Tooltip, message } from 'antd';
 import { Menu, ConfigProvider } from 'antd';
 import styles from '@/styles/client.module.scss';
 import { isMobile } from 'react-device-detect';
@@ -124,7 +124,9 @@ const Header = (props: any) => {
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: "pointer" }}>
                                                 <span>Welcome {user?.name}</span>
-                                                <Avatar> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                                <Tooltip title={user?.name} placement="top">
+                                                    <Avatar src={`${import.meta.env.VITE_BACKEND_URL}/images/user/${user?.avatar}`}> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                                </Tooltip>
                                             </Space>
                                         </Dropdown>
                                     }

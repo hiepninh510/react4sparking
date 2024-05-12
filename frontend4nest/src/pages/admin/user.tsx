@@ -4,7 +4,7 @@ import { fetchUser } from "@/redux/slice/userSlide";
 import { IUser } from "@/types/backend";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Button, Popconfirm, Space, message, notification } from "antd";
+import { Avatar, Button, Popconfirm, Space, Tooltip, message, notification } from "antd";
 import { useState, useRef } from 'react';
 import dayjs from 'dayjs';
 import { callDeleteUser } from "@/config/api";
@@ -72,12 +72,25 @@ const UserPage = () => {
             dataIndex: 'email',
             sorter: true,
         },
-
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            width: 100,
+            align: 'center',
+            render: (text, record, index, action) => {
+                return (
+                    <>
+                        <Avatar src={`${import.meta.env.VITE_BACKEND_URL}/images/user/${record.avatar}`} />
+                    </>
+                )
+            },
+        },
         {
             title: 'CreatedAt',
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
+            align: 'center',
             render: (text, record, index, action) => {
                 return (
                     <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>
@@ -90,6 +103,7 @@ const UserPage = () => {
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
+            align: 'center',
             render: (text, record, index, action) => {
                 return (
                     <>{dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss')}</>
@@ -102,6 +116,7 @@ const UserPage = () => {
             title: 'Actions',
             hideInSearch: true,
             width: 50,
+            align: 'center',
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access

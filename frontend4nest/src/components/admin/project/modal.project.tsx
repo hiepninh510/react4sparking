@@ -104,6 +104,7 @@ const ModalProject = (props: IProps) => {
     }
 
     const handlePreview = async (file: any) => {
+
         if (!file.originFileObj) {
             setPreviewImage(file.url);
             setPreviewOpen(true);

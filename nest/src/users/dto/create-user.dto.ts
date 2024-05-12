@@ -31,6 +31,12 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'Address không được để trống' })
     address: string;
 
+    @IsNotEmpty({ message: 'Phone không được để trống' })
+    phone: string;
+
+    @IsNotEmpty({ message: 'Avatar không được để trống' })
+    avatar: string;
+
     @IsNotEmpty({ message: 'Role không được để trống' })
     @IsMongoId({ message: 'Role co dinh dang mongo id' })
     role: mongoose.Schema.Types.ObjectId;
@@ -61,6 +67,9 @@ export class RegisterUserDto {
 
     @IsNotEmpty({ message: 'Address không được để trống' })
     address: string;
+
+    @IsNotEmpty({ message: 'Avatar không được để trống' })
+    avatar: string;
 }
 
 export class UserLoginDto {

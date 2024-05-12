@@ -14,7 +14,7 @@ import {
     ScheduleOutlined,
     FundProjectionScreenOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Dropdown, Space, message, Avatar, Button } from 'antd';
+import { Layout, Menu, Dropdown, Space, message, Avatar, Button, Tooltip, Image } from 'antd';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { callLogout } from 'config/api';
@@ -178,8 +178,12 @@ const LayoutAdmin = () => {
                         collapsible
                         collapsed={collapsed}
                         onCollapse={(value) => setCollapsed(value)}>
-                        <div style={{ height: 32, margin: 16, textAlign: 'center' }}>
-                            <BugOutlined />  ADMIN
+                        <div style={{ height: 40, margin: 16, textAlign: 'center' }}>
+                            {!collapsed ?
+                                <Image src={`${import.meta.env.VITE_BACKEND_URL}/images/logo195-65-01.png`} preview={false} />
+                                :
+                                <Image src={`${import.meta.env.VITE_BACKEND_URL}/images/favicon.png`} preview={false} />
+                            }
                         </div>
                         <Menu
                             selectedKeys={[activeMenu]}
@@ -214,9 +218,11 @@ const LayoutAdmin = () => {
                             <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                 <Space style={{ cursor: "pointer" }}>
                                     Welcome {user?.name}
-                                    <Avatar> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
-
+                                    <Tooltip title={user?.name} placement="top">
+                                        <Avatar src={`${import.meta.env.VITE_BACKEND_URL}/images/user/${user?.avatar}`}> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                    </Tooltip>
                                 </Space>
+
                             </Dropdown>
                         </div>
                     }
