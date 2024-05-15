@@ -332,7 +332,7 @@ const ModalUser = (props: IProps) => {
                             <ProFormText
                                 label="Điện thoại"
                                 name="phone"
-                                rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                //rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
                                 placeholder="Nhập số điện thoại"
                             />
                         </Col>
@@ -348,7 +348,7 @@ const ModalUser = (props: IProps) => {
                             <ProFormDigit
                                 label="Tuổi"
                                 name="age"
-                                rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                // rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
                                 placeholder="Nhập nhập tuổi"
                             />
                         </Col>
@@ -362,7 +362,7 @@ const ModalUser = (props: IProps) => {
                                     OTHER: 'Khác',
                                 }}
                                 placeholder="Please select a gender"
-                                rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
+                            //   rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
                             />
                         </Col>
                         <Col lg={6} md={6} sm={24} xs={24}>

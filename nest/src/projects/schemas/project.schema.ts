@@ -17,6 +17,12 @@ export class Project {
     @Prop()
     logo: string;
 
+    @Prop()
+    startAt: Date;
+
+    @Prop()
+    endAt: Date;
+
     @Prop({ type: Object })
     createdBy: {
         _id: mongoose.Schema.Types.ObjectId;

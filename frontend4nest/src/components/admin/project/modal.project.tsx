@@ -1,6 +1,6 @@
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { FooterToolbar, ModalForm, ProCard, ProFormText, ProFormTextArea } from "@ant-design/pro-components";
-import { Col, ConfigProvider, Form, Modal, Row, Upload, message, notification } from "antd";
+import { Col, ConfigProvider, Form, Modal, Row, Upload, message, notification, DatePicker } from "antd";
 import 'styles/reset.scss';
 import { isMobile } from 'react-device-detect';
 import ReactQuill from 'react-quill';
@@ -166,6 +166,7 @@ const ModalProject = (props: IProps) => {
         }
     };
 
+    const { RangePicker } = DatePicker;
 
     return (
         <>
@@ -269,6 +270,12 @@ const ModalProject = (props: IProps) => {
                                         autoSize: { minRows: 4 }
                                     }}
                                 />
+                            </Col>
+
+                            <Col span={24}>
+                                <ConfigProvider locale={enUS}>
+                                    <RangePicker placeholder={['Từ ngày', 'Đến ngày']} style={{ marginBottom: 20 }} name="startAt" />
+                                </ConfigProvider>
                             </Col>
 
                             <ProCard

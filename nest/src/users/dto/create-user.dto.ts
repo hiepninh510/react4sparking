@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested, isObject } from "class-validator";
+import { IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsObject, IsOptional, IsString, ValidateNested, isObject } from "class-validator";
 import mongoose from "mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -22,19 +22,19 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'Password không được để trống' })
     password: string;
 
-    @IsNotEmpty({ message: 'Age không được để trống' })
+    @IsOptional()
     age: number;
 
-    @IsNotEmpty({ message: 'Gender không được để trống' })
+    @IsOptional()
     gender: string;
 
-    @IsNotEmpty({ message: 'Address không được để trống' })
+    @IsOptional()
     address: string;
 
-    @IsNotEmpty({ message: 'Phone không được để trống' })
+    @IsOptional()
     phone: string;
 
-    @IsNotEmpty({ message: 'Avatar không được để trống' })
+    @IsOptional()
     avatar: string;
 
     @IsNotEmpty({ message: 'Role không được để trống' })

@@ -5,7 +5,7 @@ import { fetchProject } from "@/redux/slice/ProjectSlide";
 import { IProject } from "@/types/backend";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Button, Popconfirm, Space, message, notification } from "antd";
+import { Button, Image, Popconfirm, Space, message, notification } from "antd";
 import { useState, useRef } from 'react';
 import dayjs from 'dayjs';
 import { callDeleteProject } from "@/config/api";
@@ -60,7 +60,7 @@ const ProjectPage = () => {
         {
             title: 'Id',
             dataIndex: '_id',
-            width: 250,
+            width: 200,
             render: (text, record, index, action) => {
                 return (
                     <span>
@@ -71,40 +71,75 @@ const ProjectPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Name',
+            title: 'Tên dự án',
             dataIndex: 'name',
             sorter: true,
         },
         {
-            title: 'Address',
+            title: 'Địa chỉ',
             dataIndex: 'address',
             sorter: true,
         },
-
         {
-            title: 'CreatedAt',
-            dataIndex: 'createdAt',
+            title: 'Hình ảnh',
+            dataIndex: 'logo',
             width: 200,
-            sorter: true,
+            align: 'center',
             render: (text, record, index, action) => {
                 return (
-                    <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>
+                    <> <Image src={`${import.meta.env.VITE_BACKEND_URL}/images/project/${record.logo}`} /></>
                 )
             },
             hideInSearch: true,
         },
         {
-            title: 'UpdatedAt',
-            dataIndex: 'updatedAt',
-            width: 200,
+            title: 'Ngày bắt đầu',
+            dataIndex: 'startAt',
+            width: 150,
             sorter: true,
             render: (text, record, index, action) => {
                 return (
-                    <>{dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss')}</>
+                    <>{dayjs(record.startAt).format('DD/MM/YYYY HH:mm:ss')}</>
                 )
             },
             hideInSearch: true,
         },
+        {
+            title: 'Ngày kết thúc',
+            dataIndex: 'endAt',
+            width: 150,
+            sorter: true,
+            render: (text, record, index, action) => {
+                return (
+                    <>{dayjs(record.endAt).format('DD/MM/YYYY HH:mm:ss')}</>
+                )
+            },
+            hideInSearch: true,
+        },
+        // {
+        //     title: 'CreatedAt',
+        //     dataIndex: 'createdAt',
+        //     width: 200,
+        //     sorter: true,
+        //     render: (text, record, index, action) => {
+        //         return (
+        //             <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>
+        //         )
+        //     },
+        //     hideInSearch: true,
+        // },
+        // {
+        //     title: 'UpdatedAt',
+        //     dataIndex: 'updatedAt',
+        //     width: 200,
+        //     sorter: true,
+        //     render: (text, record, index, action) => {
+        //         return (
+        //             <>{dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss')}</>
+        //         )
+        //     },
+        //     hideInSearch: true,
+        // },
         {
 
             title: 'Actions',

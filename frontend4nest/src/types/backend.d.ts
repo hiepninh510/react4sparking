@@ -57,6 +57,8 @@ export interface IProject {
     name?: string;
     address?: string;
     logo: string;
+    startAt: string;
+    endAt: string;
     description?: string;
     createdBy?: string;
     isDeleted?: boolean;
