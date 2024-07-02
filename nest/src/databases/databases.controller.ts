@@ -5,5 +5,5 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('databases')
 @Controller('databases')
 export class DatabasesController {
-  constructor(private readonly databasesService: DatabasesService) { }
+  constructor(private readonly databasesService: DatabasesService) {}
 }

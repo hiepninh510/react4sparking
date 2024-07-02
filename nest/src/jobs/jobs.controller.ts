@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
@@ -9,7 +18,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('jobs')
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) { }
+  constructor(private readonly jobsService: JobsService) {}
 
   @ResponseMessage('Create a new Job')
   @Post()
@@ -21,9 +30,10 @@ export class JobsController {
   @Public()
   @ResponseMessage('Fetch list job with paginate')
   findAll(
-    @Query("current") currentPage: string,
-    @Query("pageSize") limit: string,
-    @Query() qs: string) {
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
+    @Query() qs: string,
+  ) {
     return this.jobsService.findAll(+currentPage, +limit, qs);
   }
 
@@ -31,12 +41,16 @@ export class JobsController {
   @Public()
   @ResponseMessage('Get job by id')
   findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(id)
+    return this.jobsService.findOne(id);
   }
 
   @ResponseMessage('Update a job')
   @Patch(':id')
-  update(@Param('id') _id: string, @Body() updateJobDto: UpdateJobDto, @User() user: IUser) {
+  update(
+    @Param('id') _id: string,
+    @Body() updateJobDto: UpdateJobDto,
+    @User() user: IUser,
+  ) {
     return this.jobsService.update(_id, updateJobDto, user);
   }
 
@@ -45,5 +59,4 @@ export class JobsController {
   remove(@Param('id') _id: string, @User() user: IUser) {
     return this.jobsService.remove(_id, user);
   }
-
 }

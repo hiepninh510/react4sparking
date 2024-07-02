@@ -8,6 +8,6 @@ import { Job, JobSchema } from './schemas/job.schema';
   imports: [MongooseModule.forFeature([{ name: Job.name, schema: JobSchema }])],
   controllers: [JobsController],
   providers: [JobsService],
-  exports: [JobsService]
+  exports: [JobsService],
 })
-export class JobsModule { }
+export class JobsModule {}
