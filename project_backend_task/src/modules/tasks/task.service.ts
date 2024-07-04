@@ -6,9 +6,10 @@ import { createTaskDTO } from './dto/creattask.dto';
 import { formatDate } from '../../formats/format.date';
 import { createDetail_TaskDTO } from '../detail_tasks/dto/creatdetail_task.dto';
 import { DetailTaskService } from '../detail_tasks/detail_task.service';
-import { level_TaskDTO, status_TaskDTO } from './dto/updatetask.dto';
+// import { level_TaskDTO, status_TaskDTO } from './dto/updatetask.dto';
 import { ProjectService } from '../projects/project.service';
 import { Task_Project } from 'src/models/task_project.model';
+import { updateTaskDTO } from './dto/updatetask.dto';
 
 @Injectable()
 export class TaskService {
@@ -24,6 +25,7 @@ export class TaskService {
 
   async findAllTask(): Promise<any> {
     const tasks = await this.taskRepository.find();
+    console.log(__dirname);
     const task_Arr = [];
     for (const item of tasks) {
       const task = {
@@ -71,14 +73,14 @@ export class TaskService {
     }
   }
 
-  async changeTask_Level(body: level_TaskDTO): Promise<any> {
+  async changeTask_Level(body: Partial<updateTaskDTO>): Promise<any> {
     const task = await this.taskRepository.findOne({ where: { id: body.id } });
     task.level_task = body.level.toString();
     await this.taskRepository.save(task);
     return { message: `Đã thay đổi level thành: ${task.level_task}` };
   }
 
-  async changeTask_Status(body: status_TaskDTO): Promise<any> {
+  async changeTask_Status(body: Partial<updateTaskDTO>): Promise<any> {
     const task = await this.taskRepository.findOne({ where: { id: body.id } });
     task.status_task = body.status.toString();
     await this.taskRepository.save(task);

@@ -1,22 +1,31 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from './project.model';
 
 @Entity()
 export class Company {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'nvarchar', length: 250 })
   name_company: string;
 
-  @Column()
+  @Column({ type: 'nvarchar', length: 500 })
   address: string;
 
-  @Column()
+  @Column({ type: 'char', length: 10 })
   phone: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 150 })
   email: string;
+
+  @Column({ type: 'nvarchar', length: 100 })
+  representative: string;
 
   @ManyToMany(() => Project, (project) => project.companys)
   @JoinTable()
