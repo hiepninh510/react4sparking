@@ -46,19 +46,28 @@ export class CompanyService {
     }
   }
 
+  async getAllCompany(): Promise<any> {
+    const companys = this.companyRepository.find();
+    if (companys) {
+      return companys;
+    } else {
+      return { message: 'Danh sách công ty đang trống!' };
+    }
+  }
+
   async updateCompany(
-    body: Partial<updateCompanyDTO>,
+    bodyDTO: Partial<updateCompanyDTO>,
     id: string,
   ): Promise<any> {
     const company = await this.companyRepository.findOne({
       where: { id: id },
     });
-    for (const key in body) {
-      if (body.hasOwnProperty(key) && body[key] !== company[key]) {
-        (company as any)[key] = body[key];
+    for (const key in bodyDTO) {
+      if (company.hasOwnProperty(key) && bodyDTO[key] !== company[key]) {
+        (company as any)[key] = bodyDTO[key];
       }
     }
     await this.companyRepository.save(company);
-    return company;
+    return { message: 'Cập nhật thành công!', company };
   }
 }

@@ -14,6 +14,8 @@ import { ProjectModule } from './modules/projects/project.module';
 import { DetailTaskModule } from './modules/detail_tasks/detail_task.module';
 import { CompanyModule } from './modules/companys/company.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Staff_Task } from './models/staff_task.model';
+import { StaffModule } from './modules/staffs/staff.module';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           Staff,
           Task_Project,
           Project_Company,
+          Staff_Task,
           // __dirname + '/../**/*.model{.ts,.js}',
         ],
       }),
@@ -44,6 +47,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ProjectModule,
     DetailTaskModule,
     CompanyModule,
+    StaffModule,
   ],
   controllers: [AppController],
   providers: [AppService],

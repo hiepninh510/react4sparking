@@ -10,6 +10,8 @@ import { DetailTaskService } from '../detail_tasks/detail_task.service';
 import { ProjectService } from '../projects/project.service';
 import { Task_Project } from 'src/models/task_project.model';
 import { updateTaskDTO } from './dto/updatetask.dto';
+import { Staff_Task } from 'src/models/staff_task.model';
+import { StaffService } from '../staffs/staff.service';
 
 @Injectable()
 export class TaskService {
@@ -21,11 +23,13 @@ export class TaskService {
     private readonly projectService: ProjectService,
     @InjectRepository(Task_Project)
     private readonly project_taskReponstory: Repository<Task_Project>,
+    private readonly staffService: StaffService,
+    @InjectRepository(Staff_Task)
+    private readonly staff_taskReonsitory: Repository<Staff_Task>,
   ) {}
 
   async findAllTask(): Promise<any> {
     const tasks = await this.taskRepository.find();
-    console.log(__dirname);
     const task_Arr = [];
     for (const item of tasks) {
       const task = {
@@ -43,18 +47,19 @@ export class TaskService {
 
   async creatTask(
     taskDTO: createTaskDTO,
-    detailTaskDTO: createDetail_TaskDTO,
-    nameProject: string,
+    detailTaskDTO: Partial<createDetail_TaskDTO>,
+    id_project: string,
+    id_staff: string,
   ): Promise<any> {
-    const project = await this.projectService.findNameProject(nameProject);
+    const project = await this.projectService.findNameProject(id_project);
     if (project) {
       const taskSQL = new Task();
-      (taskSQL.name_task = taskDTO.name),
-        (taskSQL.start_day = taskDTO.start_day),
-        (taskSQL.finish_day = taskDTO.finish_day),
-        (taskSQL.status_task = taskDTO.status),
-        (taskSQL.level_task = taskDTO.level),
-        await this.taskRepository.save(taskSQL);
+      taskSQL.name_task = taskDTO.name;
+      taskSQL.start_day = taskDTO.start_day;
+      taskSQL.finish_day = taskDTO.finish_day;
+      taskSQL.status_task = taskDTO.status;
+      taskSQL.level_task = taskDTO.level;
+      await this.taskRepository.save(taskSQL);
       const message = await this.deatailTaskService.createDetailTask(
         detailTaskDTO,
         taskSQL.id,
@@ -65,8 +70,28 @@ export class TaskService {
         task_project.name_project = project.name_project;
         task_project.task_id = taskSQL.id;
         task_project.name_task = taskSQL.name_task;
-        await this.project_taskReponstory.save(task_project);
-        return taskSQL;
+        const tableTaskProject =
+          await this.project_taskReponstory.save(task_project);
+        if (tableTaskProject) {
+          const tableStaffTask = new Staff_Task();
+          const staff = await this.staffService.findOneStaff(id_staff);
+          if (staff) {
+            tableStaffTask.name_staff = staff.name_staff;
+            tableStaffTask.name_task = taskSQL.name_task;
+            tableStaffTask.staff_id = staff.id;
+            tableStaffTask.task_id = taskSQL.id;
+            await this.staff_taskReonsitory.save(tableStaffTask);
+            return taskSQL;
+          } else {
+            return {
+              message: 'Lưu dữ liệu vào bảng staff_task không thành công!',
+            };
+          }
+        } else {
+          return {
+            Masege: 'Lưu dữ liệu vào bảng task_project không thành công!',
+          };
+        }
       } else {
         return { Masege: 'Mô tả công việc khởi tạo không thành công' };
       }

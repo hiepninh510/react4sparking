@@ -18,13 +18,13 @@ export class creatCompanyDTO {
   @IsNotEmpty({ message: 'So dien thoai khong duoc de trong!' })
   @IsNumberString()
   @Length(10, 10)
-  phone: string;
+  readonly phone: string;
 
   @IsNotEmpty({ message: 'Email khong duoc de trong!' })
   @IsEmail()
-  email: string;
+  readonly email: string;
 
   @IsNotEmpty({ message: 'Nguoi dai dien khong duoc de trong!' })
   @IsString()
-  representative: string;
+  readonly representative: string;
 }

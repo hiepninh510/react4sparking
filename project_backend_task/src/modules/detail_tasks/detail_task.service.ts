@@ -16,7 +16,7 @@ export class DetailTaskService {
   }
 
   async createDetailTask(
-    detail: createDetail_TaskDTO,
+    detail: Partial<createDetail_TaskDTO>,
     id: string,
   ): Promise<any> {
     let message: string;

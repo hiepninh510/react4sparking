@@ -15,7 +15,8 @@ export class TaskController {
     return this.taskService.creatTask(
       body.taskDTO,
       body.detailTaskDTO,
-      body.name,
+      body.project,
+      body.staff,
     );
   }
 

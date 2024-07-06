@@ -45,9 +45,9 @@ export class ProjectService {
     }
   }
 
-  async findNameProject(name: string): Promise<any> {
+  async findNameProject(id_project: string): Promise<any> {
     return await this.projectResponsitory.findOne({
-      where: { name_project: name },
+      where: { id: id_project },
     });
   }
 
