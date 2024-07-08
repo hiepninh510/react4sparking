@@ -7,7 +7,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class staffDTO {
+export class creatStaffDTO {
   @IsNotEmpty({ message: 'Tên nhân viên không được để trống!' })
   @IsString()
   readonly name: string;

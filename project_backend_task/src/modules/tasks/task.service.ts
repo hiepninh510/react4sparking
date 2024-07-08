@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from '../../models/task.model';
@@ -12,6 +13,7 @@ import { Task_Project } from 'src/models/task_project.model';
 import { updateTaskDTO } from './dto/updatetask.dto';
 import { Staff_Task } from 'src/models/staff_task.model';
 import { StaffService } from '../staffs/staff.service';
+import { Staff } from 'src/models/staff.model';
 
 @Injectable()
 export class TaskService {
@@ -30,18 +32,34 @@ export class TaskService {
 
   async findAllTask(): Promise<any> {
     const tasks = await this.taskRepository.find();
-    const task_Arr = [];
-    for (const item of tasks) {
-      const task = {
+    const staff_task = await this.staff_taskReonsitory.find();
+    const _staffs = await this.staffService.getAllStaff();
+
+    const taskMap = new Map<string, Task & { staff: Staff[] }>();
+    tasks.forEach((task) => {
+      taskMap.set(task.id, { ...task, staff: [] });
+    });
+    staff_task.forEach((item) => {
+      const task = taskMap.get(item.task_id);
+      if (task) {
+        _staffs.forEach((staff) => {
+          if (staff.id === item.staff_id) {
+            task.staffs.push(staff);
+          }
+        });
+      }
+    });
+    const task_Arr = await Promise.all(
+      Array.from(taskMap.values()).map(async (item) => ({
         id: item.id,
         name: item.name_task,
         start_day: await this._format.formatForDisplay(item.start_day),
         finish_day: await this._format.formatForDisplay(item.finish_day),
         status: item.status_task,
         level: item.level_task,
-      };
-      task_Arr.push(task);
-    }
+        staff: item.staffs,
+      })),
+    );
     return task_Arr;
   }
 
