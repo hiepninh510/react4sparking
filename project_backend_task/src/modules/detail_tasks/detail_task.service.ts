@@ -28,4 +28,15 @@ export class DetailTaskService {
       : (message = null);
     return message;
   }
+
+  async deleteDetailTask(id_task: string): Promise<any> {
+    const delete_detail = await this.detailTaskResponitory.delete({
+      id_task: id_task,
+    });
+    if (delete_detail) {
+      return { message: `Đã xóa thành công: ${delete_detail}` };
+    } else {
+      return { message: `Xóa không thành công! ${id_task}` };
+    }
+  }
 }

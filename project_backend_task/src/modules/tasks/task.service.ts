@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from '../../models/task.model';
@@ -7,7 +6,6 @@ import { createTaskDTO } from './dto/creattask.dto';
 import { formatDate } from '../../formats/format.date';
 import { createDetail_TaskDTO } from '../detail_tasks/dto/creatdetail_task.dto';
 import { DetailTaskService } from '../detail_tasks/detail_task.service';
-// import { level_TaskDTO, status_TaskDTO } from './dto/updatetask.dto';
 import { ProjectService } from '../projects/project.service';
 import { Task_Project } from 'src/models/task_project.model';
 import { updateTaskDTO } from './dto/updatetask.dto';
@@ -35,9 +33,9 @@ export class TaskService {
     const staff_task = await this.staff_taskReonsitory.find();
     const _staffs = await this.staffService.getAllStaff();
 
-    const taskMap = new Map<string, Task & { staff: Staff[] }>();
+    const taskMap = new Map<string, Task & { staffs: Staff[] }>();
     tasks.forEach((task) => {
-      taskMap.set(task.id, { ...task, staff: [] });
+      taskMap.set(task.id, { ...task, staffs: [] });
     });
     staff_task.forEach((item) => {
       const task = taskMap.get(item.task_id);
@@ -116,17 +114,49 @@ export class TaskService {
     }
   }
 
-  async changeTask_Level(body: Partial<updateTaskDTO>): Promise<any> {
-    const task = await this.taskRepository.findOne({ where: { id: body.id } });
-    task.level_task = body.level.toString();
-    await this.taskRepository.save(task);
-    return { message: `Đã thay đổi level thành: ${task.level_task}` };
+  async changeInfroTask(body: Partial<updateTaskDTO>): Promise<any> {
+    const taskNeedChange = await this.taskRepository.findOne({
+      where: { id: body.id },
+    });
+    for (const key in body) {
+      if (
+        taskNeedChange.hasOwnProperty(key) &&
+        body[key] !== taskNeedChange[key]
+      ) {
+        (taskNeedChange as any)[key] = body[key];
+      }
+      await this.taskRepository.save(taskNeedChange);
+    }
+    return { message: `Bạn đã cập nhật thành công: ${taskNeedChange}` };
   }
 
-  async changeTask_Status(body: Partial<updateTaskDTO>): Promise<any> {
-    const task = await this.taskRepository.findOne({ where: { id: body.id } });
-    task.status_task = body.status.toString();
-    await this.taskRepository.save(task);
-    return { message: `Đã thay đổi status thành: ${task.status_task}` };
+  async deleteTask(id: string): Promise<any> {
+    try {
+      const deletePromise = await Promise.all([
+        this.deatailTaskService.deleteDetailTask(id),
+        this.staff_taskReonsitory.delete({ task_id: id }),
+        this.taskRepository.delete({ id: id }),
+        this.project_taskReponstory.delete({ task_id: id }),
+      ]);
+      const [
+        detailTaskDeleteResult,
+        staffTaskDeleteResult,
+        taskDeleteResult,
+        projectTaskDeleteResult,
+      ] = deletePromise;
+
+      const isSuccess =
+        (detailTaskDeleteResult.affected ?? 0) > 0 &&
+        (staffTaskDeleteResult.affected ?? 0) > 0 &&
+        (taskDeleteResult.affected ?? 0) > 0 &&
+        (projectTaskDeleteResult.affected ?? 0) > 0;
+      if (isSuccess) {
+        return { message: `Đã xóa thành công` };
+      } else {
+        return { message: `Xóa không thành công: ${id}` };
+      }
+    } catch (error) {
+      return { message: `Có lỗi xảy ra khi xóa: ${error.message}` };
+    }
   }
 }
